@@ -4,14 +4,16 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class SalaryInfo {
+    private static final DateTimeFormatter DATE_FORMATTER
+            = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    private static final int DATE_INDEX = 0;
+    private static final int NAME_INDEX = 1;
+    private static final int HOURS_INDEX = 2;
+    private static final int RATE_INDEX = 3;
+
     public String getSalaryInfo(String[] names, String[] data, String dateFrom, String dateTo) {
-        final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        final int dateIndex = 0;
-        final int nameIndex = 1;
-        final int hoursIndex = 2;
-        final int rateIndex = 3;
-        LocalDate from = LocalDate.parse(dateFrom, dateFormatter);
-        LocalDate to = LocalDate.parse(dateTo, dateFormatter);
+        LocalDate from = LocalDate.parse(dateFrom, DATE_FORMATTER);
+        LocalDate to = LocalDate.parse(dateTo, DATE_FORMATTER);
 
         StringBuilder report = new StringBuilder();
         report.append("Report for period ")
@@ -25,12 +27,12 @@ public class SalaryInfo {
 
             for (String record: data) {
                 String[] parts = record.split(" ");
-                LocalDate recDate = LocalDate.parse(parts[dateIndex], dateFormatter);
+                LocalDate recDate = LocalDate.parse(parts[DATE_INDEX], DATE_FORMATTER);
                 boolean inRange = !recDate.isBefore(from) && !recDate.isAfter(to);
 
-                if (parts[nameIndex].equals(name) && inRange) {
-                    int hours = Integer.parseInt(parts[hoursIndex]);
-                    int rate = Integer.parseInt(parts[rateIndex]);
+                if (parts[NAME_INDEX].equals(name) && inRange) {
+                    int hours = Integer.parseInt(parts[HOURS_INDEX]);
+                    int rate = Integer.parseInt(parts[RATE_INDEX]);
                     salary += hours * rate;
                 }
             }
