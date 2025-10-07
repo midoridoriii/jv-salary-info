@@ -5,9 +5,13 @@ import java.time.format.DateTimeFormatter;
 
 public class SalaryInfo {
     public String getSalaryInfo(String[] names, String[] data, String dateFrom, String dateTo) {
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        LocalDate from = LocalDate.parse(dateFrom, fmt);
-        LocalDate to = LocalDate.parse(dateTo, fmt);
+        final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        final int dateIndex = 0;
+        final int nameIndex = 1;
+        final int hoursIndex = 2;
+        final int rateIndex = 3;
+        LocalDate from = LocalDate.parse(dateFrom, dateFormatter);
+        LocalDate to = LocalDate.parse(dateTo, dateFormatter);
 
         StringBuilder report = new StringBuilder();
         report.append("Report for period ")
@@ -21,12 +25,12 @@ public class SalaryInfo {
 
             for (String record: data) {
                 String[] parts = record.split(" ");
-                LocalDate recDate = LocalDate.parse(parts[0], fmt);
+                LocalDate recDate = LocalDate.parse(parts[dateIndex], dateFormatter);
                 boolean inRange = !recDate.isBefore(from) && !recDate.isAfter(to);
 
-                if (parts[1].equals(name) && inRange) {
-                    int hours = Integer.parseInt(parts[2]);
-                    int rate = Integer.parseInt(parts[3]);
+                if (parts[nameIndex].equals(name) && inRange) {
+                    int hours = Integer.parseInt(parts[hoursIndex]);
+                    int rate = Integer.parseInt(parts[rateIndex]);
                     salary += hours * rate;
                 }
             }
